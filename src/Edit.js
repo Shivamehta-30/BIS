@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { updateUser } from "./Api";
-function Edit({ setEditToggle, editToggle, data, setData }) {
+import { useLocation, useNavigate } from "react-router";
+
+function Edit({ setEditToggle, data, setData }) {
+  const { state } = useLocation(); 
+  const { editToggle } = state || {}; 
   const [newFirstName, setNewFirstName] = useState(editToggle?.firstName);
   const [newLastName, setNewLastName] = useState(editToggle?.lastName);
   const [newEmail, setNewEmail] = useState(editToggle?.email);
   const [newUserName, setNewUserName] = useState(editToggle?.username);
+
+  const navigate = useNavigate();
 
   const handleUpdate = async () => {
     const newUser = {
@@ -14,6 +20,7 @@ function Edit({ setEditToggle, editToggle, data, setData }) {
       username: newUserName,
     };
     const createdUser = await updateUser(newUser, editToggle.id);
+
     if (createdUser) {
       setData((data) =>
         data.map((user) => {
@@ -29,8 +36,13 @@ function Edit({ setEditToggle, editToggle, data, setData }) {
       setNewUserName("");
     }
     setEditToggle(null);
-    window.location.reload();  
+    navigate("/");
   };
+  const handleCancel = () => {
+    setEditToggle(null); 
+    navigate("/");
+  };
+
   if (editToggle) {
     return (
       <div>
@@ -55,7 +67,7 @@ function Edit({ setEditToggle, editToggle, data, setData }) {
           onChange={(e) => setNewUserName(e.target.value)}
         />
         <button onClick={handleUpdate}>Update</button>
-        <button onClick={() => setEditToggle(null)}>Cancle</button>
+        <button onClick={handleCancel}>Cancel</button>
       </div>
     );
   } else {

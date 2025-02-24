@@ -28,10 +28,10 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const updateUser = async (newData, id) => {
+export const updateUser = async (updatedData, id) => {
   try {
-    const response = await axios.patch(`${BASE_URL}?userId=${id}`, newData);
-    return response.data.data;     //improve names
+    const response = await axios.patch(`${BASE_URL}?userId=${id}`, updatedData);
+    return response.data.data;    
   } catch (err) { 
     console.error(err);
   }

@@ -1,0 +1,18 @@
+.search-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.search-container input {
+    width: 750px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.table-container {
+    margin-top: 20px;
+    position: relative;
+}

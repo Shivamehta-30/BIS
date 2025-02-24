@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { deleteUser, getUsers } from "./Api";
 import Form from "./Form";
-import Edit from "./Edit";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-
+import { useNavigate } from "react-router";
+import "./styles/style.css";
 function List() {
   const [data, setData] = useState([]);
-  const [editToggle, setEditToggle] = useState(null);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,25 +33,20 @@ function List() {
   };
 
   const handleEdit = (user) => {
-    setEditToggle(user);
+    navigate("/edit", { state: { editToggle: user } });
   };
+
+  const filterData = data.filter((item) =>
+    item.firstName?.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <div>
-      {editToggle && (
-        <Edit
-          setData={setData}
-          data={data}
-          setEditToggle={setEditToggle}
-          editToggle={editToggle}
-        />
-      )}
-
-      <div>
+      <div className="search-container">
         <input
           className="form-group"
           type="text"
-          placeholder="Search by name"
+          placeholder="Search by first name"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -78,7 +73,7 @@ function List() {
           </tr>
         </thead>
         <tbody>
-          {data.map((i) => (
+          {filterData.map((i) => (
             <tr key={i.id}>
               <td>{i.firstName}</td>
               <td>{i.lastName}</td>
